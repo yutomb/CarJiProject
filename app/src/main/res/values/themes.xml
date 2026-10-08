@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.CarJiProject" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <!-- NoActionBar：仪表盘要全屏，不要标题栏（原来的标题栏会挡住左上角档位和右上角日期） -->
+    <style name="Theme.CarJiProject" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

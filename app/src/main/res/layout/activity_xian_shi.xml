@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  车载座舱仪表盘 —— 界面模板
+  设计约定：
+    1. 所有"会变的数值"都有独立 id，且初始值全部为 0 / 占位符
+    2. 数值只由 XianShiAct.render(CarStatus) 统一赋值，布局里不写死任何真实数据
+    3. 以后要改外观，随便改这个文件；要接数据，不用碰这个文件
+-->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,53 +16,187 @@
     android:background="#0E1216"
     tools:context=".XianShiAct">
 
-    <!-- 正中央：车速 -->
+    <!-- ==================== 左上角：档位 ==================== -->
+
+    <TextView
+        android:id="@+id/tvGear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/bg_gear_badge"
+        android:gravity="center"
+        android:minWidth="76dp"
+        android:minHeight="76dp"
+        android:paddingHorizontal="22dp"
+        android:text="P"
+        android:textColor="#FFFFFF"
+        android:textSize="46sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ==================== 左上角：车外温度 ==================== -->
+
+    <TextView
+        android:id="@+id/tvTempLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="22dp"
+        android:letterSpacing="0.18"
+        android:text="车外温度"
+        android:textColor="#8A9BA8"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvGear" />
+
+    <TextView
+        android:id="@+id/tvTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="2dp"
+        android:text="0°C"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTempLabel" />
+
+    <!-- ==================== 右上角：日期 / 时间 ==================== -->
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="48dp"
+        android:letterSpacing="0.08"
+        android:text="0000-00-00"
+        android:textColor="#8A9BA8"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="48dp"
+        android:text="00:00"
+        android:textColor="#FFFFFF"
+        android:textSize="46sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDate" />
+
+    <!-- ==================== 正中央：车速 ==================== -->
+    <!-- vertical_bias 0.38：整体略微上移，给下方的续航/电量留位置 -->
+
     <TextView
         android:id="@+id/tvSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:includeFontPadding="false"
         android:text="0"
         android:textColor="#FFFFFF"
-        android:textSize="140sp"
+        android:textSize="170sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38" />
 
     <TextView
         android:id="@+id/tvSpeedUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:letterSpacing="0.25"
         android:text="km/h"
         android:textColor="#8A9BA8"
-        android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@id/tvSpeed"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="@id/tvSpeed"
         app:layout_constraintStart_toStartOf="@id/tvSpeed"
-        app:layout_constraintEnd_toEndOf="@id/tvSpeed" />
+        app:layout_constraintTop_toBottomOf="@id/tvSpeed" />
 
-    <!-- 左下：温度 -->
-    <TextView
-        android:id="@+id/tvTemp"
+    <!-- ========== 车速正下方：续航 | 电量 ========== -->
+    <!-- 用横向 LinearLayout 排两个数值块，中间一条竖线分隔 -->
+
+    <LinearLayout
+        android:id="@+id/statusRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:text="温度 24°C"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="34dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSpeedUnit">
 
-    <!-- 右下：电量 -->
-    <TextView
-        android:id="@+id/tvBattery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:text="电量 82%"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- 续航 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRangeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.18"
+                android:text="续航"
+                android:textColor="#8A9BA8"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvRangeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="0 km"
+                android:textColor="#FFFFFF"
+                android:textSize="38sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 分隔竖线 -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="58dp"
+            android:layout_marginHorizontal="64dp"
+            android:background="#2F3C47" />
+
+        <!-- 电量 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvBatteryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.18"
+                android:text="电量"
+                android:textColor="#8A9BA8"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvBatteryValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="0%"
+                android:textColor="#FFFFFF"
+                android:textSize="38sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
